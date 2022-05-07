@@ -1,0 +1,124 @@
+-- Database generated with pgModeler (PostgreSQL Database Modeler).
+-- pgModeler  version: 0.9.3
+-- PostgreSQL version: 13.0
+-- Project Site: pgmodeler.io
+-- Model Author: ---
+
+-- Database creation must be performed outside a multi lined SQL file. 
+-- These commands were put in this file only as a convenience.
+-- 
+-- object: new_database | type: DATABASE --
+-- DROP DATABASE IF EXISTS new_database;
+CREATE DATABASE new_database;
+-- ddl-end --
+
+
+-- object: public.stav_vyroby | type: TABLE --
+-- DROP TABLE IF EXISTS public.stav_vyroby CASCADE;
+CREATE TABLE public.stav_vyroby (
+	in_progress varchar(50),
+	finished varchar(10) NOT NULL,
+	canceled varchar(10),
+	CONSTRAINT stav_vyroby_pk PRIMARY KEY (finished)
+
+);
+-- ddl-end --
+ALTER TABLE public.stav_vyroby OWNER TO postgres;
+-- ddl-end --
+
+-- object: public.stav_predmetu | type: TABLE --
+-- DROP TABLE IF EXISTS public.stav_predmetu CASCADE;
+CREATE TABLE public.stav_predmetu (
+	objednano varchar(100),
+	vyrobeno varchar(100) NOT NULL,
+	privezeno varchar(100),
+	odvezeno varchar(10),
+	finished_stav_vyroby varchar(10),
+	CONSTRAINT stav_predmetu_pk PRIMARY KEY (vyrobeno)
+
+);
+-- ddl-end --
+ALTER TABLE public.stav_predmetu OWNER TO postgres;
+-- ddl-end --
+
+-- object: public.new_table | type: TABLE --
+-- DROP TABLE IF EXISTS public.new_table CASCADE;
+CREATE TABLE public.new_table (
+	name_items varchar(100),
+	vyrobeno_stav_predmetu varchar(100)
+);
+-- ddl-end --
+ALTER TABLE public.new_table OWNER TO postgres;
+-- ddl-end --
+
+-- object: public.sklad | type: TABLE --
+-- DROP TABLE IF EXISTS public.sklad CASCADE;
+CREATE TABLE public.sklad (
+	naskladneno varchar(100) NOT NULL,
+	vyskladneno varchar(100),
+	CONSTRAINT sklad_pk PRIMARY KEY (naskladneno)
+
+);
+-- ddl-end --
+ALTER TABLE public.sklad OWNER TO postgres;
+-- ddl-end --
+
+-- object: public.items | type: TABLE --
+-- DROP TABLE IF EXISTS public.items CASCADE;
+CREATE TABLE public.items (
+	name varchar(100) NOT NULL,
+	number smallint,
+	type varchar(30),
+	CONSTRAINT items_pk PRIMARY KEY (name)
+
+);
+-- ddl-end --
+ALTER TABLE public.items OWNER TO postgres;
+-- ddl-end --
+
+-- object: stav_vyroby_fk | type: CONSTRAINT --
+-- ALTER TABLE public.stav_predmetu DROP CONSTRAINT IF EXISTS stav_vyroby_fk CASCADE;
+ALTER TABLE public.stav_predmetu ADD CONSTRAINT stav_vyroby_fk FOREIGN KEY (finished_stav_vyroby)
+REFERENCES public.stav_vyroby (finished) MATCH FULL
+ON DELETE SET NULL ON UPDATE CASCADE;
+-- ddl-end --
+
+-- object: public.many_sklad_has_many_items | type: TABLE --
+-- DROP TABLE IF EXISTS public.many_sklad_has_many_items CASCADE;
+CREATE TABLE public.many_sklad_has_many_items (
+	naskladneno_sklad varchar(100) NOT NULL,
+	name_items varchar(100) NOT NULL,
+	CONSTRAINT many_sklad_has_many_items_pk PRIMARY KEY (naskladneno_sklad,name_items)
+
+);
+-- ddl-end --
+
+-- object: sklad_fk | type: CONSTRAINT --
+-- ALTER TABLE public.many_sklad_has_many_items DROP CONSTRAINT IF EXISTS sklad_fk CASCADE;
+ALTER TABLE public.many_sklad_has_many_items ADD CONSTRAINT sklad_fk FOREIGN KEY (naskladneno_sklad)
+REFERENCES public.sklad (naskladneno) MATCH FULL
+ON DELETE RESTRICT ON UPDATE CASCADE;
+-- ddl-end --
+
+-- object: items_fk | type: CONSTRAINT --
+-- ALTER TABLE public.many_sklad_has_many_items DROP CONSTRAINT IF EXISTS items_fk CASCADE;
+ALTER TABLE public.many_sklad_has_many_items ADD CONSTRAINT items_fk FOREIGN KEY (name_items)
+REFERENCES public.items (name) MATCH FULL
+ON DELETE RESTRICT ON UPDATE CASCADE;
+-- ddl-end --
+
+-- object: items_fk | type: CONSTRAINT --
+-- ALTER TABLE public.new_table DROP CONSTRAINT IF EXISTS items_fk CASCADE;
+ALTER TABLE public.new_table ADD CONSTRAINT items_fk FOREIGN KEY (name_items)
+REFERENCES public.items (name) MATCH FULL
+ON DELETE SET NULL ON UPDATE CASCADE;
+-- ddl-end --
+
+-- object: stav_predmetu_fk | type: CONSTRAINT --
+-- ALTER TABLE public.new_table DROP CONSTRAINT IF EXISTS stav_predmetu_fk CASCADE;
+ALTER TABLE public.new_table ADD CONSTRAINT stav_predmetu_fk FOREIGN KEY (vyrobeno_stav_predmetu)
+REFERENCES public.stav_predmetu (vyrobeno) MATCH FULL
+ON DELETE SET NULL ON UPDATE CASCADE;
+-- ddl-end --
+
+

@@ -1,0 +1,143 @@
+\documentclass[12pt,a4paper,notitlepage]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[czech]{babel}
+\usepackage{graphicx}
+\graphicspath{ {images/} }
+
+\begin{document}
+
+\title{Databáze skladu ve výrobní hale}
+\author{ "BERAN, LUKEŠ, ŠAFR, VLČEK" }
+\date{8. 11. 2021}
+\maketitle
+
+\begin{abstract}
+Tento dokument byl vypracovaný společně se všemi členy týmu a ověřuje základní znalosti \LaTeX, databází a projektového řízení.
+
+Tým pracoval samostatně a využíval všechny dostupné materiály na Moodle nebo internetu. Veškeré licenční a právní náležitosti jsou upraveny v tomto dokumentu.
+
+Těm, který není tento dokument určen nemají žádné právo na využití obsahu tohoto dokumentu.
+
+Veškerá data osob a předmětů jsou smyšlená a nezakládají se na skutečnosti.
+\end{abstract}
+
+\newpage
+
+\tableofcontents
+
+\newpage
+
+
+\section{Popis databáze}
+Databáze obsahuje informace o uskladněných a vyskladněných předmětech které byli přivezeny do nebo vyrobeny ve výrobní hale, případně i zadané objednávky.
+
+Databáze je vytvořena na jazyce MySQL a využívá veškeré technologické vlastnosti této DB.
+\newpage
+\section{Licenční informace a HW požadavky}
+\subsection{Licence}
+\subsection{Hardware}
+\begin{itemize}
+\item{Integrovaná grafická karta, 1 GB RAM, Procesor Pentium SSE2 nebo lepší}
+\end{itemize}
+\subsection{Software}
+\begin{itemize}
+\item{Mozilla Firefox Verze 94.0.1}
+\subitem{- pod Mozilla Public License 2.0}
+\item{Windows 7}
+\end{itemize}
+
+\newpage
+\section{Enumerizace hodnot}
+\subsection{Normované enumerizace}
+\begin{itemize}
+\item{Typ předmětů}
+\subitem{A = Rychloobrátkové výrobky}
+\subitem{B = Středněobrátkové výrobky}
+\subitem{C = Nízkoobrátkové výrobky}
+\end{itemize}
+\subsection{Custom enumerizace}
+\begin{itemize}
+\item{Stav výroby - Progres}
+\subitem{1 = Inicializace}
+\subitem{2 = Probíhá}
+\subitem{3 = Pozastavena}
+\end{itemize}
+\begin{itemize}
+\item{Naskladněno}
+\subitem{0 = Výrobní hala Sever}
+\subitem{1 = Budova skladu 1 Severozápad}
+\subitem{2 = Budova skladu 2 Severovýchod}
+\subitem{3 = Budova skladu 3 Západ}
+\end{itemize}
+
+\newpage
+\section{Databázová struktura}
+\subsection{ER diagram}
+\centering
+\includegraphics[width=\linewidth]{ErDiagram.jpg}
+
+
+\subsection{Tabulky}
+\begin{table}[h!]
+  \begin{center}
+    \caption{Stav výroby}
+    \label{tab:table1}
+    \begin{tabular}{l|c|r} % <-- Alignments: 1st column left, 2nd middle and 3rd right, with vertical lines in between
+      
+      \hline
+      1 & in progress & probíhá výroba \\
+      2 & finished & dokončená výroba\\
+      3 & canceled & zrušená výroba\\
+    \end{tabular}
+  \end{center}
+\end{table}
+\vspace{1cm}
+
+
+\begin{table}[h!]
+  \begin{center}
+    \caption{Stav předmětu}
+    \label{tab:table1}
+    \begin{tabular}{l|c|r} % <-- Alignments: 1st column left, 2nd middle and 3rd right, with vertical lines in between
+      
+      \hline
+      1 & objednáno & stav objednáno\\
+      2 & vyrobeno & stav výroby\\
+      3 & přivezeno & stav doručení\\
+      4 & odvezeno & stav odvezení\\
+    \end{tabular}
+  \end{center}
+\end{table}
+
+\vspace{1cm}
+
+\begin{table}[h!]
+  \begin{center}
+    \caption{Sklad}
+    \label{tab:table1}
+    \begin{tabular}{l|c|r} % <-- Alignments: 1st column left, 2nd middle and 3rd right, with vertical lines in between
+      
+      \hline
+      1 & naskladněno & stav na skladě\\
+      2 & vyskladněno & stav na skladě\\
+     
+    \end{tabular}
+  \end{center}
+\end{table}
+\vspace{1cm}
+
+\begin{table}[h!]
+  \begin{center}
+    \caption{Items}
+    \label{tab:table1}
+    \begin{tabular}{l|c|r} % <-- Alignments: 1st column left, 2nd middle and 3rd right, with vertical lines in between
+      
+      \hline
+      1 & name & název zboží\\
+      2 & number & číslo zboží\\
+      3 & type & druh zboží\\
+    \end{tabular}
+  \end{center}
+\end{table}
+
+\end{document}
